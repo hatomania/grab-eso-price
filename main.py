@@ -39,6 +39,7 @@ class Main:
     INTERVAL_SEC_TO_GRAB = 300
     FILENAME_ITEM_LIST = "items.yml"
     FILENAME_HTML_SRC  = "grabbed.html"
+    FTP_UPLOAD = True
 
     _g: g.EsoItemPriceInfoGrabberFromTTC
     _item_hash = {}
@@ -84,7 +85,8 @@ class Main:
     def _upload(self, html_src :str) -> None:
         with codecs.open(self.FILENAME_HTML_SRC, "w", encoding="utf-8") as f:
             f.write(html_src)
-        _ftp_upload.ftp_upload()
+        if self._FTP_UPLOAD is True:
+            _ftp_uload.ftp_upload()
 
     def _do(self) -> None:
         l = self._get_item_list()
