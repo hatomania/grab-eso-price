@@ -85,7 +85,7 @@ class Main:
     def _upload(self, html_src :str) -> None:
         with codecs.open(self.FILENAME_HTML_SRC, "w", encoding="utf-8") as f:
             f.write(html_src)
-        if self._FTP_UPLOAD is True:
+        if self.FTP_UPLOAD is True:
             _ftp_uload.ftp_upload()
 
     def _do(self) -> None:
