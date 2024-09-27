@@ -29,7 +29,6 @@ import time
 
 import codecs
 import yaml
-from selenium import webdriver
 
 import _html_str as html
 import _ftp_upload
@@ -86,7 +85,7 @@ class Main:
         with codecs.open(self.FILENAME_HTML_SRC, "w", encoding="utf-8") as f:
             f.write(html_src)
         if self.FTP_UPLOAD is True:
-            _ftp_uload.ftp_upload()
+            _ftp_upload.ftp_upload()
 
     def _do(self) -> None:
         l = self._get_item_list()
@@ -118,84 +117,8 @@ class Main:
 
         return 0
 
-#p = grabber.EsoItemPriceInfoGrabberFromTTC(lang=grabber.EsoItemPriceInfoGrabberFromTTC.Language.JP)
-#del p
-#p.grab(7583)
-#print(p.items)
-#exit()
-
-def _do_proc(__driver: webdriver.Chrome, __items: list[int]) -> None:
-    return
-    for i, id in enumerate(__items):
-        pass
-
-    i = 0
-    _outstr = _html_str._html_header() + _html_str._html_time() + "    <p>{} item(s) grabbed.</p>\n".format(len(__items))
-    for _item_id in __items:
-        _url = "https://us.tamrieltradecentre.com/pc/Trade/SearchResult?ItemID={}&SortBy=LastSeen&lang=ja-JP".format(_item_id)
-        print("getting from {}".format(_url))
-        __driver.get(_url)
-        _el = __driver.find_elements(webdriver.common.by.By.CSS_SELECTOR, "#search-result-view > div.content-container > div > div > table > tbody > tr:nth-child(1)")
-        if len(_el) == 0:
-            _outstr = _outstr + "    <div{}><hr>".format(HTML_BK_STYLE_ERR)
-            _outstr = _outstr + "Item ID [{}] is invalid.".format(_item_id)
-        else:
-            _el_hash = hash(_el[0].text)
-            if _item_id not in _item_hash or _item_hash[_item_id] != _el_hash:
-                _outstr = _outstr + "    <div{}><hr>".format(HTML_BK_STYLE_NEWITEM)
-                _item_hash[_item_id] = _el_hash
-            else:
-                _outstr = _outstr + "    <div{}><hr>".format(HTML_BK_STYLE[i % len(HTML_BK_STYLE)])
-            _outstr = _outstr + '<a href="{}" target="_blank">{}</a><br>'.format(_url, _url)
-            _outstr = _outstr + _el[0].text.replace("\n", "<br>")
-            i = i + 1
-        _outstr = _outstr + "</div>\n"
-        time.sleep(1.0)
-    _outstr = _outstr + _html_str._html_footer()
-
-    with codecs.open("./grabbed.html", "w", encoding="utf-8") as _file:
-        _file.write(_outstr)
-    _ftp_upload._ftp_upload()
-
 def main():
     return Main().main()
-
-    _options = webdriver.ChromeOptions()
-    _options.add_argument('--ignore-certificate-errors')
-    _options.add_argument('--ignore-ssl-errors')
-    _options.add_argument('--ignore-permissions')
-    _options.add_argument('--headless')
-
-    print('connectiong to remote browser...')
-    _driver = webdriver.Chrome(options=_options)
-    _driver.implicitly_wait(float(WEBDRIVER_IMPLICITLY_WAIT)) # 要素が見つかるまで待機する秒数
-
-    _current_tm = 0.0
-    _started_tm = time.time()
-    _elapsed_tm = float(INTERVAL_SEC_TO_GRAB) # 経過時間
-
-    _loop = True
-    while _loop:
-        try:
-            time.sleep(1.0)
-            _current_tm = time.time()
-
-            if _elapsed_tm >= INTERVAL_SEC_TO_GRAB:
-                _started_tm = _current_tm
-                _items = None
-                with open("./items.yml", "r", encoding="utf-8") as _file:
-                    _items = yaml.full_load(_file)
-                print("")
-                _do_proc(_driver, _items)
-
-            print(".", end="", flush=True)
-            _elapsed_tm = _current_tm - _started_tm
-        except KeyboardInterrupt:
-            print("Keyboard interrupted.")
-            _loop = False
-
-    print("the webdriver is now quiting...")
-    _driver.quit()
 
 if __name__ == '__main__':
     main()
