@@ -48,6 +48,9 @@ class NoSuchItemIDOrNoPriceListException(Exception):
     def url(self) -> str:
         return str(self.args[0])
 
+    def item_id(self) -> int:
+        return int(self.args[1])
+
 
 class EsoItemPriceInfo:
     item_id: int

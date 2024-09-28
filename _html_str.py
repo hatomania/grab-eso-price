@@ -31,6 +31,7 @@ HTML_BK_STYLE_NEWITEM = ' style="background-color:#ffff00"'
 HTML_BK_STYLE_NEWITEM = ' style="background-color:#ffff00"'
 HTML_BK_STYLE_BARGAIN1 = ' style="background-color:#33cc33"'
 HTML_BK_STYLE_BARGAIN2 = ' style="background-color:#ff9966"'
+HTML_BK_STYLE_LOCATION = ''
 THIS_DIFF_IS_FINE = 5000
 
 def _html_split() -> str:
@@ -96,3 +97,7 @@ def html_time() -> str:
 
 def html_grabbed_info(sucess: int, total: int) -> str:
     return "    <p>{} of {} item(s) grabbed.</p>\n".format(sucess, total)
+
+
+def html_location_caption(location_name: str) -> str:
+    return "    <h3{}>{}</h3>\n".format(HTML_BK_STYLE_LOCATION, location_name)

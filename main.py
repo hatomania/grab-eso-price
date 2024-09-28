@@ -28,11 +28,13 @@
 import time
 
 import codecs
+import copy
 import yaml
 
 import _html_str as html
 import _ftp_upload
 import _eso_item_grabber as g
+import _view as v
 
 class Main:
     INTERVAL_SEC_TO_GRAB = 300
@@ -51,6 +53,23 @@ class Main:
         with open(self.FILENAME_ITEM_LIST, "r", encoding="utf-8") as f:
             l = yaml.full_load(f)
         return l
+
+    def _grab(self, items: list[int]) -> list[v.ViewData]:
+        vdata_list = list[v.ViewData]()
+        for i, iid in enumerate(items):
+            vdata = v.ViewData()
+            try:
+                print("({}/{}) ".format(i+1, len(items)), end="")
+                self._g._reset_sale() # !!!!!! for the stub function
+                self._g.grab(iid)
+            except g.NoSuchItemIDOrNoPriceListException as e:
+                vdata.state = copy.deepcopy(e)
+            else:
+                vdata.items = copy.deepcopy(self._g.data)
+                vdata.url = copy.copy(self._g.url())
+            vdata_list.append(vdata)
+            time.sleep(1.0)
+        return vdata_list
 
     def _grab_and_make_html_src(self, items: list[int]) -> str:
         header = ""
@@ -83,6 +102,10 @@ class Main:
         footer = html.html_footer()
         return header + body + footer
 
+    def _build_view(self, vdata_list: list[v.ViewData]) -> str:
+        #return v.ViewHtmlNormal(vdata_list).text
+        return v.ViewHtmlGroupLocation(vdata_list).text
+
     def _upload(self, html_src :str) -> None:
         with codecs.open(self.FILENAME_HTML_SRC, "w", encoding="utf-8") as f:
             f.write(html_src)
@@ -91,7 +114,8 @@ class Main:
 
     def _do(self) -> None:
         l = self._get_item_list()
-        s = self._grab_and_make_html_src(l)
+        d = self._grab(l)
+        s = self._build_view(d)
         self._upload(s)
 
     def main(self) -> int:
