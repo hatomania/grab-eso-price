@@ -244,7 +244,7 @@ class EsoItemPriceInfoGrabberFromTTC(EsoItemPriceInfoGrabberFromWeb):
     def _find_price(self, element: WebElement) -> EsoItemPriceInfo.Price:
         ret = EsoItemPriceInfo.Price()
         elm = element.find_element(By.CLASS_NAME, "gold-amount")
-        ret.unit   = int(elm.find_element(By.CSS_SELECTOR, "span:nth-of-type(1)").text.replace(",", ""))
+        ret.unit   = int(float(elm.find_element(By.CSS_SELECTOR, "span:nth-of-type(1)").text.replace(",", "")))
         ret.amount = int(elm.find_element(By.CSS_SELECTOR, "span:nth-of-type(2)").text.replace(",", ""))
         ret.total  = int(elm.find_element(By.CSS_SELECTOR, "span:nth-of-type(3)").text.replace(",", ""))
         return ret

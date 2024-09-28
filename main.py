@@ -60,6 +60,7 @@ class Main:
         for i, id in enumerate(items):
             url = ""
             try:
+                print("({}/{}) ".format(i+1, len(items)), end="")
                 self._g._reset_sale() # !!!!!! for the stub function
                 self._g.grab(id)
             except g.NoSuchItemIDOrNoPriceListException as e:
@@ -75,6 +76,7 @@ class Main:
                 self._item_hash[id] = h
                 s_cnt = s_cnt + 1
             body = body + "\n"
+            time.sleep(1.0)
 
         header = html.html_header() + html.html_time() + html.html_grabbed_info(s_cnt, len(items))
         body   = body + html.html_body_eol()
