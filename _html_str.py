@@ -31,7 +31,7 @@ HTML_BK_STYLE_NEWITEM = ' style="background-color:#ffff00"'
 HTML_BK_STYLE_NEWITEM = ' style="background-color:#ffff00"'
 HTML_BK_STYLE_BARGAIN1 = ' style="background-color:#33cc33"'
 HTML_BK_STYLE_BARGAIN2 = ' style="background-color:#ff9966"'
-HTML_BK_STYLE_LOCATION = ''
+HTML_BK_STYLE_LOCATION = ' style="background-color:#ffbb00"'
 THIS_DIFF_IS_FINE = 5000
 
 def _html_split() -> str:

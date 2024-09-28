@@ -92,7 +92,7 @@ class ViewHtmlNormal(ViewHtml):
 
 
 class ViewHtmlGroupLocation(ViewHtmlNormal):
-    _group_data = dict[str, list[ViewData]]() # str: location name
+    _group_data: dict[str, list[ViewData]] # str: location name
 
     def __init__(self, data: list[ViewData]) -> None:
         super().__init__(data)
@@ -106,6 +106,7 @@ class ViewHtmlGroupLocation(ViewHtmlNormal):
         return text
 
     def _convert_data(self) -> None:
+        self._group_data = dict[str, list[ViewData]]()
         tmp_data_list = list[ViewData]()
         for l in self._data:
             if l.state is not None:
