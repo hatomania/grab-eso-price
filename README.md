@@ -19,6 +19,15 @@ After editing, run the following command:<br>
 ```
 python conv_list.py
 ```
+The csv format:<br>
+```
+(row1),(row2),(row3),(row4)
+...
+```
+`(row1)`: empty or '#'. '#' means that comment out. It will be ignored by this program.<br>
+`(row2)`: Item ID. This is the value of the "ItemID" parameter in the URL when you search for a product name on TTC. It's a pain, but you'll have to look it up yourself.<br>
+`(row3)`: Average sales price. Find it yourself from the TTC if you want. If the sales price is lower than this, the program will prominently display that data. You can enter 0 if you don't want it.<br>
+`(row4)`: Any string. We recommend that you enter the item name or something similar for easy identification.<br>
 
 # Run
 (I'll assume you're in the "grab-eso-price" folder and have done `.\.venv\Scripts\activate.bat`.)
