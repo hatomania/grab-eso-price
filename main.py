@@ -40,7 +40,7 @@ class Main:
     INTERVAL_SEC_TO_GRAB = 300
     FILENAME_ITEM_LIST = "items.yml"
     FILENAME_HTML_SRC  = "grabbed.html"
-    FTP_UPLOAD = True
+    FTP_UPLOAD = False
 
     _g: g.EsoItemPriceInfoGrabberFromTTC
     _item_hash = {}
