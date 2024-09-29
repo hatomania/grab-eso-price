@@ -29,8 +29,9 @@ class Main:
             reader = csv.reader(f)
             with codecs.open("items.yml", "w", encoding="utf-8") as f1, codecs.open("sale.yml", "w", encoding="utf-8") as f2:
                 for l in reader:
-                    f1.write("{}- {} # {}\n".format(l[0], l[1], l[3]))
-                    f2.write("{}- {}: [{}, 0] # {}\n".format(l[0], l[1], l[2], l[3]))
+                    if len(l) >= 3:
+                        f1.write("{}- {} # {}\n".format(l[0], l[1], l[3]))
+                        f2.write("{}- {}: [{}, 0] # {}\n".format(l[0], l[1], l[2], l[3]))
         return 0
 
 def main() -> int:
