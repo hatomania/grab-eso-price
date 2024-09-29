@@ -52,7 +52,7 @@ def _html_item(url: str, item: EsoItemPriceData) -> str:
     elif ((i.price.unit * 0.9) <= item.sale.average) or ((i.price.unit - THIS_DIFF_IS_FINE) <= item.sale.average):
         bk = HTML_BK_STYLE_BARGAIN2
     price = "<span{}>{} x {} = {} (ave: {}) (diff: {}){}</span>".format(bk, "{:,.0f}".format(i.price.unit), i.price.amount, "{:,.0f}".format(i.price.total), "{:,.0f}".format(item.sale.average), "{:+,.0f}".format(i.price.unit - item.sale.average), ic)
-    return '[{}] <a href="{}" target="_blank">{}</a><br>{}<br>{}<br>{}<br>{}'.format(i.item_id, url, i.item_name, i.location_name, i.guild_name, price, i.elapsed_time_as_it_is)
+    return '[{}] <a href="{}" target="_blank">{}</a> <input type="button" value="I have this❤" onclick="document.getElementById(\'{}\').innerHTML=\'\'"/><br>{}<br>{}<br>{}<br>{}'.format(i.item_id, url, i.item_name, i.item_id, i.location_name, i.guild_name, price, i.elapsed_time_as_it_is)
 
 
 def _html_body_url(url: str) -> str:
@@ -68,7 +68,7 @@ def html_body_new(url: str, item: EsoItemPriceData) -> str:
 
 
 def html_body_no_new(url: str, item: EsoItemPriceData, counter: int) -> str:
-    return "    <div{}>{}{}</div>".format(HTML_BK_STYLE[counter % len(HTML_BK_STYLE)], _html_split(), _html_item(url, item))
+    return '    <div id="{}"{}>{}{}</div>'.format(item.items[0].item_id, HTML_BK_STYLE[counter % len(HTML_BK_STYLE)], _html_split(), _html_item(url, item))
 
 
 def html_body_eol() -> str:
@@ -76,9 +76,11 @@ def html_body_eol() -> str:
 
 
 def html_header() -> str:
-    return '''<html lang="ja">
+    return '''<!DOCTYPE html>
+<html lang="ja">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>grab eso price</title>
   </head>
   <body>
