@@ -46,7 +46,7 @@ class Main:
     _item_hash = {}
 
     def __init__(self) -> None:
-        self._g = g.EsoItemPriceInfoGrabberFromTTC(lang=g.EsoItemPriceInfoGrabberFromTTC.Language.JP)
+        self._g = g.EsoItemPriceInfoGrabberFromTTC(lang=g.EsoItemPriceInfoGrabberFromTTC.Language.EN)
 
     def _get_item_list(self) -> list[int]:
         l = []
