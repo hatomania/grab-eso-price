@@ -31,6 +31,7 @@ import codecs
 import copy
 import yaml
 
+import _myargs
 import _html_str as html
 import _ftp_upload
 import _eso_item_grabber as g
@@ -41,11 +42,17 @@ class Main:
     FILENAME_ITEM_LIST = "items.yml"
     FILENAME_HTML_SRC  = "grabbed.html"
     FTP_UPLOAD = False
+    GRAB_ONCE = False
 
+    _args: _myargs.MyArgs
     _g: g.EsoItemPriceInfoGrabberFromTTC
     _item_hash = {}
 
     def __init__(self) -> None:
+        self._args = _myargs.MyArgs()
+        #print(vars(self._args))
+        self.INTERVAL_SEC_TO_GRAB = self._args.interval
+        self.GRAB_ONCE = self._args.once
         self._g = g.EsoItemPriceInfoGrabberFromTTC(lang=g.EsoItemPriceInfoGrabberFromTTC.Language.EN)
 
     def _get_item_list(self) -> list[int]:
@@ -136,6 +143,10 @@ class Main:
 
                 print(".", end="", flush=True)
                 elapsed_tm = current_tm - started_tm
+
+                if self.GRAB_ONCE is True:
+                    print("It was done once.")
+                    _loop = False
 
             except KeyboardInterrupt:
                 print("Keyboard interrupted.")
